@@ -16,11 +16,73 @@ namespace DataBase
         /// <param name="path">Путь файла</param>
         static void CheckOnExist(string path)
         {
-            
+
             if (!File.Exists(path))
             {
                 File.Create(path);
             }
+        }
+
+        /// <summary>
+        /// Сортировка по возрасту
+        /// </summary>
+        /// <param name="repository">Передаем сюда экземпляр репозитория</param>
+        /// <param name="inputSymbol">Символ при выборе меню</param>
+        static void SortByAge(Repository repository, char inputSymbol)
+        {
+            Console.Clear();
+
+            repository.Load();
+
+            Workers[] workers = repository.Load();
+
+            Array.Resize(ref workers, repository.index);
+            Array.Sort(workers, Workers.CompareByAge);
+
+            for (int i = 0; i < repository.index; i++)
+            {
+                Console.WriteLine(workers[i].Print());
+            }
+
+            Console.WriteLine("\nНажмите 1 чтобы выйти назад!");
+
+            do
+            {
+                inputSymbol = Convert.ToChar(Console.ReadLine());
+
+            } while (inputSymbol != '1');
+
+        }
+
+        /// <summary>
+        /// Сортировка по дате рождения
+        /// </summary>
+        /// <param name="repository">Передаем сюда экземпляр репозитория</param>
+        /// <param name="inputSymbol">Символ при выборе меню</param>
+        static void SortByBirthday(Repository repository, char inputSymbol)
+        {
+            Console.Clear();
+
+            repository.Load();
+
+            Workers[] workers = repository.Load();
+
+            Array.Resize(ref workers, repository.index);
+            Array.Sort(workers, Workers.CompareByBirthday);
+
+            for (int i = 0; i < repository.index; i++)
+            {
+                Console.WriteLine(workers[i].Print());
+            }
+
+            Console.WriteLine("\nНажмите 1 чтобы выйти назад!");
+
+            do
+            {
+                inputSymbol = Convert.ToChar(Console.ReadLine());
+
+            } while (inputSymbol != '1');
+
         }
 
         /// <summary>
@@ -29,7 +91,7 @@ namespace DataBase
         /// <param name="repository">Ссылка на экземпляр репозитория</param>
         static void Menu(Repository repository)
         {
-            while (true) 
+            while (true)
             {
                 Console.Clear();
 
@@ -105,7 +167,7 @@ namespace DataBase
 
                             switch (inputSymbol)
                             {
-                                case'1':
+                                case '1':
 
                                     Console.Clear();
 
@@ -191,37 +253,43 @@ namespace DataBase
 
                     case '5':
 
-                        Console.Clear();
+                        bool switcher = false;
 
-                        Console.WriteLine("По какому полю отсортировать?\n" +
-                               "1 - Возрасту \n" +
-                               "2 - Дате рождения\n" +
-                               "3 - Выйти в главное меню");
-
-                        inputSymbol = Convert.ToChar(Console.ReadLine());
-
-                        switch (inputSymbol)
+                        do
                         {
-                            case '1':
-                                Console.Clear();
 
-                                //Вставлять
+                            Console.Clear();
 
-                                Console.WriteLine("\nНажмите 1 чтобы выйти назад!");
+                            Console.WriteLine("По какому полю отсортировать?\n" +
+                                   "1 - Возрасту \n" +
+                                   "2 - Дате рождения\n" +
+                                   "3 - Выйти в главное меню");
 
-                                do
-                                {
-                                    inputSymbol = Convert.ToChar(Console.ReadLine());
+                            inputSymbol = Convert.ToChar(Console.ReadLine());
 
-                                } while (inputSymbol != '1');
+                            switch (inputSymbol)
+                            {
+                                case '1':
 
+                                    SortByAge(repository, inputSymbol);
 
-                                break;
-                        }
+                                    break;
 
+                                case '2':
 
+                                    SortByBirthday(repository, inputSymbol);
+
+                                    break;
+
+                                case '3':
+
+                                    switcher = true;
+
+                                    break;
+                            }
+
+                        } while (!switcher);
                         break;
-
                 }
 
             }

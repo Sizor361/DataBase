@@ -18,7 +18,7 @@ namespace DataBase
 
         private string path;
 
-        int index;
+        public int index;
 
         #endregion
 
@@ -28,7 +28,7 @@ namespace DataBase
         {
             this.path = path;
             this.index = 0;
-            this.workers = new Workers[100];
+            this.workers = new Workers[5];
         }
 
         #endregion
@@ -76,7 +76,7 @@ namespace DataBase
         /// <summary>
         /// Обновление базы данных
         /// </summary>
-        public void Load()
+        public Workers[] Load()
         {
             using (StreamReader sr = new StreamReader(this.path))
             {
@@ -92,6 +92,8 @@ namespace DataBase
                 }
                 sr.Close();
             }
+
+            return workers;
         }
 
         /// <summary>
@@ -114,7 +116,9 @@ namespace DataBase
         {
             Load();
 
-            if (id<= index)
+            Array.Resize(ref workers, index);
+
+            if (id< index)
             {
                 Console.Write(this.workers[id].Print());
                 Console.WriteLine();
@@ -206,24 +210,39 @@ namespace DataBase
 
         #region Составные методы (инкапсуляция)
 
+        /// <summary>
+        /// Показывает все записи
+        /// </summary>
         public void ShowAllRecords()
         {
             Load();
             Print();
         }
 
+        /// <summary>
+        /// Создаем новую запись
+        /// </summary>
         public void CreateNewRecord()
         {
             Load();
             NewWorker();
         }
 
+        /// <summary>
+        /// Поиск по двум значениям, например дате создания
+        /// </summary>
+        /// <param name="min">Минимальное значение</param>
+        /// <param name="max">Максимальное значение</param>
         public void SearchDataRecord(DateTime min, DateTime max)
         {
             Load();
             GetWorkerByTimeRecord(min, max);
         }
 
+        /// <summary>
+        /// Удаляем работника из БД
+        /// </summary>
+        /// <param name="id"></param>
         public void DeleteWorker(int id)
         {
             Load();

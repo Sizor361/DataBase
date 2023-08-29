@@ -148,6 +148,28 @@ namespace DataBase
             return $"{id+plus}#{timeRecord}#{fullName}#{age}#{height}#{birthday.ToShortDateString()}#{bornPlace}";
         }
 
+        /// <summary>
+        /// Метод сортировки по возрасту
+        /// </summary>
+        /// <param name="workers1"></param>
+        /// <param name="workers2"></param>
+        /// <returns></returns>
+        public static int CompareByAge(Workers workers1, Workers workers2)
+        {
+            return workers1.Age.CompareTo(workers2.Age);
+        }
+
+        /// <summary>
+        /// Метод сортировки по дню рождению
+        /// </summary>
+        /// <param name="workers1"></param>
+        /// <param name="workers2"></param>
+        /// <returns></returns>
+        public static int CompareByBirthday(Workers workers1, Workers workers2)
+        {
+            return workers1.Birthday.CompareTo(workers2.Birthday);
+        }
+
 
         #endregion
 
